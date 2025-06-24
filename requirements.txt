@@ -9,3 +9,5 @@ langchain_text_splitters
 sentence_transformers
 pypdf
 faiss-cpu
+huggingface-hub
+hf_xet

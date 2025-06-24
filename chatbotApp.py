@@ -20,9 +20,17 @@ os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["GROQ_API_KEY"] = st.secrets["GROQ_API_KEY"]
 os.environ["HF_TOKEN"] = st.secrets["HF_TOKEN"]
 
+from huggingface_hub import snapshot_download
+
+# Preload model to local directory (cached)
+snapshot_download(repo_id="sentence-transformers/all-MiniLM-L6-v2", local_dir="./hf_cache", token=os.environ["HF_TOKEN"])
+
 @st.cache_resource
 def load_embeddings():
-    return HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    return HuggingFaceEmbeddings(
+        model_name="./hf_cache",  # Local path instead of huggingface repo
+        cache_folder="./hf_cache"
+    )
 
 embeddings = load_embeddings()
 
